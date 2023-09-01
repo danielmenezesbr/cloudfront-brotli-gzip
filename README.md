@@ -8,13 +8,19 @@ It's a project designed to demonstrate enabling Brotli and GZIP compression on C
 aws iam create-user --user-name superadmin
 aws iam attach-user-policy --user-name superadmin --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
 aws iam create-access-key --user-name superadmin
+```
 
+```
 aws configure
+```
 
+```
 brew install tfenv
 tfenv install 1.5.5
 tfenv use 1.5.5
+```
 
+```
 git clone https://github.com/danielmenezesbr/cloudfront-brotli-gzip
 cd cloudfront-brotli-gzip
 terraform init
@@ -25,15 +31,10 @@ terraform apply -auto-approve
 # testing
 
 ```
-brew install brotli
-
 cloudfront_url=$(terraform output cloudfront_url | tr -d '"')
 curl -H "Accept-Encoding: br" -o output_file.br "https://${cloudfront_url}/index.html"
 curl -H "Accept-Encoding: gzip" -o output_file.gzip "https://${cloudfront_url}/index.html"
 curl -o output_file.plain "https://${cloudfront_url}/index.html"
-
-brotli -d -o output_file.br_uncompressed output_file.br
-gzip -d -c output_file.gzip > output_file.gzip_uncompressed
 ```
 
 ```
@@ -44,6 +45,16 @@ file output_file.gzip output_file.br
 output_file.br:   data
 output_file.gzip: gzip compressed data, from Unix, original size modulo 2^32 3115
 ```
+
+```
+brew install brotli
+```
+
+```
+brotli -d -o output_file.br_uncompressed output_file.br
+gzip -d -c output_file.gzip > output_file.gzip_uncompressed
+```
+
 ## verifying the hash for decompressed files
 
 ### linux
